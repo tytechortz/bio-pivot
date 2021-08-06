@@ -55,67 +55,19 @@ def get_header(p= 'homepage'):
 
     return header
 
-def get_navbar(p = 'homepage'):
-    navbar_homepage = html.Div([
-        html.Div([], className='col-2'),
-        html.Div([
-            dcc.Link(
-                html.H6(children='Revenue'),
-                href='/apps/revenue'
-            )
-        ],
-            className='col-2',
-            style={'text-align': 'center'}
-        ),
-        html.Div([
-            dcc.Link(
-                html.H6(children='Per Capita Rev.'),
-                href='/apps/pc_rev'
-            )
-        ],
-            className='col-2',
-            style={'text-align': 'center'}
-        ),
-        html.Div([
-            dcc.Link(
-                html.H6(children='Per License Rev.'),
-                href='/apps/pl_rev'
-            )
-        ],
-            className='col-2',
-            style={'text-align': 'center'}
-        ),
-        html.Div([
-            dcc.Link(
-                html.H6(children='Businesses'),
-                href='/apps/biz'
-            )
-        ],
-            className='col-2',
-            style={'text-align': 'center'}
-        ),
-        html.Div([], className = 'col-2')
-    ],
-    className = 'row',
-    style = {'background-color' : 'dark-green',
-            'box-shadow': '2px 5px 5px 1px rgba(0, 100, 0, .5)'}
-    )
-      
-    if p == 'homepage':
-        return navbar_homepage
-    # elif p == 'revenue':
-    #     return navbar_revenue
-    # elif p == 'pc_rev':
-    #     return navbar_pcrev
-    # elif p == 'pl_rev':
-    #     return navbar_plrev
-    # elif p == 'biz':
-    #     return navbar_biz
 
 def home_page_App():
     return html.Div([
         get_header(),
-        # get_navbar()
+        html.Div([
+            html.Div([
+                dcc.Graph('site-map')
+            ],
+                className='col-12'
+            ),
+        ],
+            className='row'
+        ),
     ])
 
     app.layout = home_page_App
