@@ -24,16 +24,17 @@ def get_header():
         # html.Div([], className = 'col-2'), #Same as img width, allowing to have the title centrally aligned
 
         html.Div([
-            html.H1(children='Pivot Bio',
-                    style = {'textAlign' : 'center', 'color':'white'}
-            )],
+            # html.H1(children='Pivot Bio',
+            #         style = {'textAlign' : 'center', 'color':'white'}
+            # )],
+            html.Img(src='/assets/Pivot-Bio-Logo-483x100.webp')],
+            
             className='col-12',
             style = {'padding-top' : '1%'}
         ),
         ],
         className = 'row',
-        style = {'height' : '4%',
-                'background-color' : 'green'}
+        style = {'height' : '4%'}
         )
 
     return header
@@ -97,7 +98,8 @@ def get_navbar(p = 'homepage'):
 
 def home_page_App():
     return html.Div([
-        get_navbar()
+        get_header(),
+        # get_navbar()
     ])
 
     app.layout = home_page_App
