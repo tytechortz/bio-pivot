@@ -17,25 +17,41 @@ app.config.suppress_callback_exceptions = True
 
 server = app.server
 
-def get_header():
+def get_emptyrow(h='15px'):
+    """This returns an empty row of a defined height"""
+
+    emptyrow = html.Div([
+        html.Div([
+            html.Br()
+        ], className = 'col-12')
+    ],
+    className = 'row',
+    style = {'height' : h})
+
+    return emptyrow
+
+def get_header(p= 'homepage'):
 
     header = html.Div([
-
-        # html.Div([], className = 'col-2'), #Same as img width, allowing to have the title centrally aligned
-
         html.Div([
-            # html.H1(children='Pivot Bio',
-            #         style = {'textAlign' : 'center', 'color':'white'}
-            # )],
-            html.Img(src='/assets/Pivot-Bio-Logo-483x100.webp')],
-            
-            className='col-12',
+            html.Img(src='/assets/Pivot-Bio-Logo-483x100.webp'),
+        ],  
+            className='col-6',
             style = {'padding-top' : '1%'}
         ),
-        ],
-        className = 'row',
-        style = {'height' : '4%'}
-        )
+        # get_emptyrow(),
+        html.Div([
+                dcc.Link(
+                    html.H2(children='Home', style={'color':'black'}),
+                    href='/homepage'
+                )
+            ],
+                style = {'padding-top' : '2.5%'}
+            ),
+    ],
+    className = 'row',
+    style = {'height' : '4%'}
+    )
 
     return header
 
