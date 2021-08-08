@@ -14,6 +14,49 @@ import datetime
 
 load_dotenv()
 
+
+# print(cities)
+
+
+################################################################
+# Map Callback
+################################################################
+
+@app.callback(
+    Output('site-map', 'figure'),
+    Input('region', 'value'))
+def update_site_map(region):
+    print(region)
+    cities = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/master/us-cities-top-1k.csv")
+    print(cities)
+    data = [dict(
+        lat = cities['lat'],
+        lon = cities['lon'],
+        type = 'scattermapbox',
+        marker = dict(size=7)
+    )]
+    # layers=[
+        
+    #   ]
+
+    layout = dict(
+            mapbox = dict(
+                accesstoken = os.environ.get("mapbox_token"),
+                center = dict(lat=39, lon=-105.5),
+                # zoom = 5.6,
+                zoom = 6,
+                style = 'white-bg',
+                # layers = layers
+            ),
+            hovermode = 'closest',
+            height = 500,
+            margin = dict(r=0, l=0, t=0, b=0),
+            clickmode = 'event+select'
+        )
+
+    fig = dict(data=data, layout=layout)
+    return fig
+
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
     html.Div(id='page-content')

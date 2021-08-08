@@ -61,6 +61,26 @@ def home_page_App():
         get_header(),
         html.Div([
             html.Div([
+            ],
+                className='col-1'
+            ),
+            html.Div([
+                dcc.Dropdown(
+                    id='region',
+                    options=[
+                        {'label':'All', 'value':'All'},
+                        {'label':'CO', 'value':'CO'},
+                    ]
+                )
+            ],
+                className='col-2'
+            ),
+            
+        ],
+            className='row'
+        ),
+        html.Div([
+            html.Div([
                 dcc.Graph('site-map')
             ],
                 className='col-12'
