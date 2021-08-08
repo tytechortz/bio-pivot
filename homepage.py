@@ -81,9 +81,13 @@ def home_page_App():
         ),
         html.Div([
             html.Div([
+            ],
+                className='col-1'
+            ),
+            html.Div([
                 dcc.Graph('site-map')
             ],
-                className='col-12'
+                className='col-10'
             ),
         ],
             className='row'
