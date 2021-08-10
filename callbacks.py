@@ -31,50 +31,31 @@ load_dotenv()
     Input('region', 'value'))
 def update_site_map(region):
     # print(region)
-    cities = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/master/us-cities-top-1k.csv")
-    # print(cities)
+    sites = pd.read_csv("sites.csv")
+    print(sites)
     data = [dict(
-        lat = cities['lat'],
-        lon = cities['lon'],
+        lat = sites['lat'],
+        lon = sites['lon'],
         type = 'scattermapbox',
         marker = dict(size=7)
     )]
 
-    if region == 'CO':
-
-        layout = dict(
-            mapbox = dict(
-                
-            center = dict(lat=39, lon=-105.5),
-            accesstoken = os.environ.get("mapbox_token"),
-            zoom = 6,
-            style = 'light',
-            ),
-            hovermode = 'closest',
-            height = 500,
-            margin = dict(r=0, l=0, t=0, b=0),
-            clickmode = 'event+select'
-        )
-        fig1 = dict(data=data, layout=layout)
-        return fig1
-    else:
-        layout = dict(
-            mapbox = dict(
-                
-            center = dict(lat=39, lon=-98),
-            accesstoken = os.environ.get("mapbox_token"),
-            zoom = 3.25,
-            style = 'light',
-            ),
-            hovermode = 'closest',
-            height = 500,
-            margin = dict(r=0, l=0, t=0, b=0),
-            clickmode = 'event+select'
-        )
-
-
-        fig2 = dict(data=data, layout=layout)
-        return fig2
+    layout = dict(
+        mapbox = dict(
+            
+        center = dict(lat=39, lon=-105.5),
+        accesstoken = os.environ.get("mapbox_token"),
+        zoom = 6,
+        style = 'light',
+        ),
+        hovermode = 'closest',
+        height = 500,
+        margin = dict(r=0, l=0, t=0, b=0),
+        clickmode = 'event+select'
+    )
+    fig = dict(data=data, layout=layout)
+    return fig
+    
 
 def parse_contents(contents, filename, date):
     content_type, content_string = contents.split(',')
@@ -100,7 +81,8 @@ def parse_contents(contents, filename, date):
 
         dash_table.DataTable(
             data=df.to_dict('records'),
-            columns=[{'name': i, 'id': i} for i in df.columns]
+            columns=[{'name': i, 'id': i} for i in df.columns],
+            page_size=10
         ),
 
         html.Hr(),  # horizontal line

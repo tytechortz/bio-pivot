@@ -118,7 +118,11 @@ def home_page_App():
             className='row'
         ),
         html.Div([
-            html.Div(id='output-data-upload'),
+            html.Div([
+                html.Div(id='output-data-upload'),
+            ],
+                className='col-6'
+            ),
         ],
             className='row'
         ),
