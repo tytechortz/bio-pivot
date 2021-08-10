@@ -29,44 +29,38 @@ def update_site_map(region):
     print(region)
     cities = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/master/us-cities-top-1k.csv")
     print(cities)
-
-    def get_center():
-        if region == 'CO':
-            center = dict(lat=39, lon=-105.5)
-        else:
-            center = dict(lat=39.5, lon=-98)
-        print(center)
-        return center
-    
-    def get_zoom():
-        if region == 'CO':
-            zoom = 6
-        else:
-            zoom = 3.25
-        print(zoom)
-        return zoom
-
-
-
     data = [dict(
         lat = cities['lat'],
         lon = cities['lon'],
         type = 'scattermapbox',
         marker = dict(size=7)
     )]
-    # layers=[
-        
-    #   ]
 
-    layout = dict(
+    if region == 'CO':
+
+        layout = dict(
             mapbox = dict(
-                accesstoken = os.environ.get("mapbox_token"),
-                # center = dict(lat=39, lon=-105.5),
-                center = get_center(),
-                # zoom = 5.6,
-                zoom = get_zoom(),
-                style = 'light',
-                # layers = layers
+                
+            center = dict(lat=39, lon=-105.5),
+            accesstoken = os.environ.get("mapbox_token"),
+            zoom = 6,
+            style = 'light',
+            ),
+            hovermode = 'closest',
+            height = 500,
+            margin = dict(r=0, l=0, t=0, b=0),
+            clickmode = 'event+select'
+        )
+        fig1 = dict(data=data, layout=layout)
+        return fig1
+    else:
+        layout = dict(
+            mapbox = dict(
+                
+            center = dict(lat=39, lon=-98),
+            accesstoken = os.environ.get("mapbox_token"),
+            zoom = 3.25,
+            style = 'light',
             ),
             hovermode = 'closest',
             height = 500,
@@ -74,8 +68,9 @@ def update_site_map(region):
             clickmode = 'event+select'
         )
 
-    fig = dict(data=data, layout=layout)
-    return fig
+
+        fig2 = dict(data=data, layout=layout)
+        return fig2
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
