@@ -1,6 +1,6 @@
 import dash_core_components as dcc
 import dash_html_components as html
-
+from dash.dependencies import Input, Output, State
 import plotly.express as px
 import plotly.graph_objs as go
 import pandas as pd
@@ -9,6 +9,7 @@ import dash
 from datetime import datetime as dt
 from app import app
 import dash_bootstrap_components as dbc
+
 # from data import df_revenue, df_pc, df_rev
 
 app = dash.Dash(__name__)
@@ -110,11 +111,22 @@ def home_page_App():
                         'textAlign': 'center',
                         'margin': '10px'
                     },
+                    multiple=True
                 )
             ])
         ],
             className='row'
         ),
+        html.Div([
+            html.Div(id='output-data-upload'),
+        ],
+            className='row'
+        ),
     ])
 
-    app.layout = home_page_App
+
+
+
+
+
+app.layout = home_page_App
