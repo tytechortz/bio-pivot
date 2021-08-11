@@ -188,9 +188,9 @@ def update_site_map(n_intervals):
     layout = dict(
         mapbox = dict(
             
-        center = dict(lat=39, lon=-105.5),
+        center = dict(lat=39.835, lon=-99.090),
         accesstoken = os.environ.get("mapbox_token"),
-        zoom = 6,
+        zoom = 3.25,
         style = 'light',
         ),
         hovermode = 'closest',
