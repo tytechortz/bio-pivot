@@ -113,7 +113,17 @@ app.layout = html.Div([
         ],
             className='row'
         ),
-        html.Div(id='postgres_datatable'),
+        get_emptyrow(),
+        html.Div([
+            html.Div([
+                html.Div(id='postgres_datatable'),
+            ],
+                className='col-4'
+            ),
+        ],
+            className='row'
+        ),
+        
         html.Div([
             html.Div([
                 dcc.Upload(
