@@ -180,7 +180,9 @@ def update_site_map(n_intervals):
         lat = sites['lat'],
         lon = sites['lon'],
         type = 'scattermapbox',
-        marker = dict(size=7)
+        marker = dict(size=10, color='red'),
+        text = sites['site_name'],
+        hoverinfo = 'text'
     )]
 
     layout = dict(
