@@ -150,28 +150,8 @@ app.layout = html.Div([
                 html.Button('Save to PostgreSQL', id='save_to_postgres', n_clicks=0),
                 # html.Button('Add Column', id='adding-columns-button', n_clicks=0),
             ],
-                className='col-6'
+                className='col-5'
             ),
-            
-        ],
-            className='row'
-        ),
-        get_emptyrow(),
-        html.Div([
-            html.Div([
-            ],
-                className='col-1'
-            ),
-            html.Div([
-                html.Div(id='postgres_datatable'),
-            ],
-                className='col-4'
-            ),
-        ],
-            className='row'
-        ),
-        
-        html.Div([
             html.Div([
                 dcc.Upload(
                     id='upload-data',
@@ -191,16 +171,40 @@ app.layout = html.Div([
                     },
                     multiple=True
                 )
-            ])
+            ],
+                className='col-5'
+            ),
+            
         ],
             className='row'
         ),
+        get_emptyrow(),
         html.Div([
+            html.Div([
+            ],
+                className='col-1'
+            ),
+            html.Div([
+                html.Div(id='postgres_datatable'),
+            ],
+                className='col-4'
+            ),
             html.Div([
                 html.Div(id='output-data-upload'),
             ],
                 className='col-6'
             ),
+        ],
+            className='row'
+        ),
+        
+        html.Div([
+            
+        ],
+            className='row'
+        ),
+        html.Div([
+            
         ],
             className='row'
         ),
