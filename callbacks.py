@@ -28,7 +28,7 @@ load_dotenv()
 
 @app.callback(
     Output('site-map', 'figure'),
-    Input('region', 'value'))
+    Input('add-site', 'value'))
 def update_site_map(region):
     # print(region)
     sites = pd.read_csv("sites.csv")
@@ -82,7 +82,8 @@ def parse_contents(contents, filename, date):
         dash_table.DataTable(
             data=df.to_dict('records'),
             columns=[{'name': i, 'id': i} for i in df.columns],
-            page_size=10
+            page_size=10,
+            # editable=True,
         ),
 
         html.Hr(),  # horizontal line

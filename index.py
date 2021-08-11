@@ -12,6 +12,8 @@ from os import environ
 from dotenv import load_dotenv
 import callbacks
 
+
+
 load_dotenv()
 
 app.layout = html.Div([
