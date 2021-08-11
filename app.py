@@ -99,15 +99,15 @@ app.layout = html.Div([
                 className='col-1'
             ),
             html.Div([
-                dcc.Input(
-                    id='adding-rows-name',
-                    placeholder='Enter a column name...',
-                    value='',
-                    style={'padding': 10}
-                ),
+                # dcc.Input(
+                #     id='adding-rows-name',
+                #     placeholder='Enter a column name...',
+                #     value='',
+                #     style={'padding': 10}
+                # ),
                 html.Button('Add Row', id='editing-rows-button', n_clicks=0),
                 html.Button('Save to PostgreSQL', id='save_to_postgres', n_clicks=0),
-                html.Button('Add Column', id='adding-columns-button', n_clicks=0),
+                # html.Button('Add Column', id='adding-columns-button', n_clicks=0),
             ],
                 className='col-6'
             ),
@@ -212,29 +212,17 @@ def populate_datatable(n_intervals):
                          'name': str(x),
                          'id': str(x),
                          'deletable': False,
-                     } if x == 'Sales' or x == 'Phone'
-                     else {
-                'name': str(x),
-                'id': str(x),
-                'deletable': True,
             }
                      for x in df.columns],
             data=df.to_dict('records'),
             editable=True,
-            row_deletable=True,
+            row_deletable=False,
             filter_action="native",
             sort_action="native",  # give user capability to sort columns
             sort_mode="single",  # sort across 'multi' or 'single' columns
             page_action='none',  # render all of the data at once. No paging.
             style_table={'height': '300px', 'overflowY': 'auto'},
             style_cell={'textAlign': 'left', 'minWidth': '100px', 'width': '100px', 'maxWidth': '100px'},
-            style_cell_conditional=[
-                {
-                    'if': {'column_id': c},
-                    'textAlign': 'right'
-                } for c in ['Price', 'Sales']
-            ]
-
         ),
     ]
 
