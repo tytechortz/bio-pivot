@@ -104,17 +104,18 @@ def parse_contents(contents, filename, date):
         dash_table.DataTable(
             data=df.to_dict('records'),
             columns=[{'name': i, 'id': i} for i in df.columns],
-            page_size=10
+            page_size=10,
+            editable=True
         ),
 
         html.Hr(),  # horizontal line
 
         # For debugging, display the raw contents provided by the web browser
-        html.Div('Raw Content'),
-        html.Pre(contents[0:200] + '...', style={
-            'whiteSpace': 'pre-wrap',
-            'wordBreak': 'break-all'
-        })
+        # html.Div('Raw Content'),
+        # html.Pre(contents[0:200] + '...', style={
+        #     'whiteSpace': 'pre-wrap',
+        #     'wordBreak': 'break-all'
+        # })
     ])
 
 app.layout = html.Div([
@@ -153,26 +154,10 @@ app.layout = html.Div([
                 className='col-5'
             ),
             html.Div([
-                dcc.Upload(
-                    id='upload-data',
-                    children=html.Div([
-                        'Drag and Drop or ',
-                        html.A('Select Files')
-                    ]),
-                    style={
-                        'width': '100%',
-                        'height': '60px',
-                        'lineHeight': '60px',
-                        'borderWidth': '1px',
-                        'borderStyle': 'dashed',
-                        'borderRadius': '5px',
-                        'textAlign': 'center',
-                        'margin': '10px'
-                    },
-                    multiple=True
-                )
+                dcc.Upload(html.Button('Upload File'),id='upload-data', multiple=True),
+                html.Button('Save Upload to PostgresQL', id='save-upload', n_clicks=0),
             ],
-                className='col-5'
+                className='col-6'
             ),
             
         ],
@@ -211,14 +196,24 @@ app.layout = html.Div([
         dcc.Interval(id='interval_pg', interval=86400000*7, n_intervals=0),  # activated once/week or when page refreshed
         html.Div(id='placeholder', children=[]),
         dcc.Store(id="store", data=0),
+        dcc.Store(id="store2", data=0),
         dcc.Interval(id='interval', interval=1000),
     ])
 
 @app.callback(Output('output-data-upload', 'children'),
-              Input('upload-data', 'contents'),
-              State('upload-data', 'filename'),
-              State('upload-data', 'last_modified'))
-def update_output(list_of_contents, list_of_names, list_of_dates):
+              [Input('upload-data', 'contents'),
+              Input('save-upload', 'n_clicks')],
+              [State('upload-data', 'filename'),
+              State('upload-data', 'last_modified')],
+              prevent_initial_call=True)
+def update_output(list_of_contents, n_clicks, list_of_names, list_of_dates):
+    def parse_contents(contents, filename, date):
+        content_type, content_string = contents.split(',')
+        decoded = base64.b64decode(content_string)
+        df = pd.read_csv(io.StringIO(decoded.decode('utf-8')))
+        print(df)
+        pg = df
+        pg.to_sql('stations', con=db.engine, if_exists='replace', index=False)
     if list_of_contents is not None:
         children = [
             parse_contents(c, n, d) for c, n, d in
@@ -310,6 +305,7 @@ def add_row(n_clicks, rows, columns):
         rows.append({c['id']: '' for c in columns})
     return rows
 
+
 @app.callback(
     [Output('placeholder', 'children'),
      Output("store", "data")],
@@ -339,6 +335,8 @@ def df_to_csv(n_clicks, n_intervals, dataset, s):
     elif s == 0:
         return no_output, s
 
+
+    
 
 if __name__ == '__main__':
     app.run_server(port=8000, debug=True)
