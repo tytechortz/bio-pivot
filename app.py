@@ -10,6 +10,7 @@ import dash
 from datetime import datetime as dt
 import dash_bootstrap_components as dbc
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import insert
 from flask import Flask
 import os
 import base64
@@ -200,25 +201,34 @@ app.layout = html.Div([
         dcc.Interval(id='interval', interval=1000),
     ])
 
-@app.callback(Output('output-data-upload', 'children'),
-              [Input('upload-data', 'contents'),
-              Input('save-upload', 'n_clicks')],
-              [State('upload-data', 'filename'),
-              State('upload-data', 'last_modified')],
-              prevent_initial_call=True)
-def update_output(list_of_contents, n_clicks, list_of_names, list_of_dates):
-    def parse_contents(contents, filename, date):
-        content_type, content_string = contents.split(',')
-        decoded = base64.b64decode(content_string)
-        df = pd.read_csv(io.StringIO(decoded.decode('utf-8')))
-        print(df)
-        pg = df
-        pg.to_sql('stations', con=db.engine, if_exists='replace', index=False)
+@app.callback(
+    Output('output-data-upload', 'children'),
+    Input('upload-data', 'contents'),
+    [State('upload-data', 'filename'),
+    State('upload-data', 'last_modified')],
+    prevent_initial_call=True)
+def update_output(list_of_contents,list_of_names, list_of_dates):
     if list_of_contents is not None:
         children = [
             parse_contents(c, n, d) for c, n, d in
             zip(list_of_contents, list_of_names, list_of_dates)]
+        # print(children)
         return children
+
+
+# @app.callback(Output('output-data-psql', 'children'),
+#               [Input('upload-data', 'contents'),
+#               Input('save-upload', 'n_clicks')],
+#               prevent_initial_call=True)
+# def update_output(list_of_contents, n_clicks):
+#     def parse_contents(contents, filename, date):
+#         content_type, content_string = contents.split(',')
+#         decoded = base64.b64decode(content_string)
+#         df = pd.read_csv(io.StringIO(decoded.decode('utf-8')))
+#         print(df)
+#         pg = df
+#         pg.to_sql('stations', con=db.engine, if_exists='append', index=True)
+    
 
 
 @app.callback(
